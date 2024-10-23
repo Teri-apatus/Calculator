@@ -1,28 +1,34 @@
 body {
     background-color: #416165;
 }
-#calculator {
+.calculator {
+    --main-bg-color: #0b3948;
+    --main-text-color: #d9dbf1;
+    --main-border-color: #11546a;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 285px;
     height: 450px;
-    background-color: #0b3948;
+    background-color: var(--main-bg-color);
     border-radius: 5px;
 }
 
 input {
-    background-color: #0b3948;
-    color: #d9dbf1;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
     height: 98px;
     width: 253px;
-    border: 1px solid #11546a;
+    border: 1px solid var(--main-border-color);
     border-radius: 5px;
     padding: 0;
+    text-align: end;
+    font-size: 1.5em;
 }
 
-#buttons {
+.buttons {
     display: flex;
     justify-content: space-between;
     align-content: space-around;
@@ -33,10 +39,19 @@ input {
 }
 
 button {
+    cursor: pointer;
     width: 60px;
     height: 60px;
-    background-color: #0b3948;
-    color: #d9dbf1;
-    border: 1px solid #11546a;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    border: 1px solid var(--main-border-color);
     border-radius: 5px;
+}
+
+.CE:hover {
+    background-color: #e01300;
+}
+
+button:hover {
+    background-color: var(--main-border-color);
 }
