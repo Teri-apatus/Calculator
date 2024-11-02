@@ -20,7 +20,7 @@ const buttonPoint = document.getElementById('point');
 const buttonBackspace = document.getElementById('backspace');
 const buttonClear = document.getElementById('clear');
 
-let outputElements = document.getElementById('output');
+let outputElements = document.getElementById('expressionOutput');
 
 buttonNumber1.addEventListener('click', () => {
     outputElements.innerHTML += 0;
@@ -63,19 +63,31 @@ buttonNumber9.addEventListener('click', () => {
 });
 
 buttonPlus.addEventListener('click', () => {
-    outputElements.innerHTML = '+';
+    if (outputElements.innerHTML.endsWith('+')) {
+        return outputElements;
+    }
+    outputElements.innerHTML += '+';
 });
 
 buttonMinus.addEventListener('click', () => {
-    outputElements.innerHTML = '-';
+    if (outputElements.innerHTML.endsWith('-')) {
+        return outputElements;
+    }
+    outputElements.innerHTML += '-';
 });
 
 buttonMultiply.addEventListener('click', () => {
-    outputElements.innerHTML = '*';
+    if (outputElements.innerHTML.endsWith('*')) {
+        return outputElements;
+    }
+    outputElements.innerHTML += '*';
 });
 
 buttonDivide.addEventListener('click', () => {
-    outputElements.innerHTML = '÷';
+    if (outputElements.innerHTML.endsWith('÷')) {
+        return outputElements;
+    }
+    outputElements.innerHTML += '÷';
 });
 
 buttonOpeningBracket.addEventListener('click', () => {
@@ -87,11 +99,15 @@ buttonClosingBracket.addEventListener('click', () => {
 });
 
 buttonPoint.addEventListener('click', () => {
+    if (outputElements.innerHTML.endsWith('.')) {
+        return outputElements;
+    }
     outputElements.innerHTML = '.';
 });
 
 buttonBackspace.addEventListener('click', () => {
-    outputElements = outputElements.slice(0, -1); // выдаёт ошибку outputElements.slice is not a function
+    outputElements.innerHTML = outputElements.innerHTML.slice(0, -1);
+    console.log(outputElements);
 });
 
 buttonClear.addEventListener('click', () => {
