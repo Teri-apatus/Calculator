@@ -20,96 +20,109 @@ const buttonPoint = document.getElementById('point');
 const buttonBackspace = document.getElementById('backspace');
 const buttonClear = document.getElementById('clear');
 
-let outputElements = document.getElementById('expressionOutput');
+const outputElements = document.getElementById('expressionOutput');
+const INITIAL_STATE = '';
 
-buttonNumber1.addEventListener('click', () => {
-    outputElements.innerHTML += 0;
+let expressionState = outputElements.innerHTML;
+
+// let lastSymbol = expressionState.at(-1);
+
+function updateExpression(newExpression) {
+    expressionState = newExpression;
+    outputElements.innerHTML = newExpression;
+    outputElements.innerHTML = expressionState;
+}
+
+buttonNumber0.addEventListener('click', () => {
+    expressionState += 0;
 });
 
 buttonNumber1.addEventListener('click', () => {
-    outputElements.innerHTML += 1;
+    expressionState += 1;
+    console.log(expressionState);
 });
 
 buttonNumber2.addEventListener('click', () => {
-    outputElements.innerHTML += 2;
+    expressionState += 2;
+    console.log(outputElements.innerHTML);
 });
 
 buttonNumber3.addEventListener('click', () => {
-    outputElements.innerHTML += 3;
+    expressionState += 3;
 });
 
 buttonNumber4.addEventListener('click', () => {
-    outputElements.innerHTML += 4;
+    expressionState += 4;
 });
 
 buttonNumber5.addEventListener('click', () => {
-    outputElements.innerHTML += 5;
+    expressionState += 5;
 });
 
 buttonNumber6.addEventListener('click', () => {
-    outputElements.innerHTML += 6;
+    expressionState += 6;
 });
 
 buttonNumber7.addEventListener('click', () => {
-    outputElements.innerHTML += 7;
+    expressionState += 7;
 });
 
 buttonNumber8.addEventListener('click', () => {
-    outputElements.innerHTML += 8;
+    expressionState += 8;
 });
 
 buttonNumber9.addEventListener('click', () => {
-    outputElements.innerHTML += 9;
+    expressionState += 9;
 });
 
 buttonPlus.addEventListener('click', () => {
-    if (outputElements.innerHTML.endsWith('+')) {
+    if (lastSymbol == '+') {
         return outputElements;
     }
-    outputElements.innerHTML += '+';
+    expressionState += '+';
 });
 
 buttonMinus.addEventListener('click', () => {
-    if (outputElements.innerHTML.endsWith('-')) {
+    if (expressionState.endsWith('-')) {
         return outputElements;
     }
-    outputElements.innerHTML += '-';
+    expressionState += '-';
 });
 
 buttonMultiply.addEventListener('click', () => {
-    if (outputElements.innerHTML.endsWith('*')) {
+    if (expressionState.endsWith('*')) {
         return outputElements;
     }
-    outputElements.innerHTML += '*';
+    expressionState += '*';
 });
 
 buttonDivide.addEventListener('click', () => {
-    if (outputElements.innerHTML.endsWith('÷')) {
+    if (expressionState.endsWith('÷')) {
         return outputElements;
     }
-    outputElements.innerHTML += '÷';
+    expressionState += '÷';
 });
 
 buttonOpeningBracket.addEventListener('click', () => {
-    outputElements.innerHTML = '(';
+    expressionState = '(';
 });
 
 buttonClosingBracket.addEventListener('click', () => {
-    outputElements.innerHTML = ')';
+    expressionState = ')';
 });
 
 buttonPoint.addEventListener('click', () => {
-    if (outputElements.innerHTML.endsWith('.')) {
+    if (expressionState.endsWith('.')) {
         return outputElements;
     }
-    outputElements.innerHTML = '.';
+    expressionState = '.';
 });
 
 buttonBackspace.addEventListener('click', () => {
-    outputElements.innerHTML = outputElements.innerHTML.slice(0, -1);
-    console.log(outputElements);
+    expressionState = expressionState.slice(0, -1);
+    console.log(expressionState);
 });
 
 buttonClear.addEventListener('click', () => {
-    outputElements.innerHTML = '';
+    expressionState = INITIAL_STATE;
 });
