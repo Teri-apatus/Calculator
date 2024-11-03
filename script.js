@@ -29,22 +29,20 @@ let expressionState = outputElements.innerHTML;
 
 function updateExpression(newExpression) {
     expressionState = newExpression;
-    outputElements.innerHTML = newExpression;
     outputElements.innerHTML = expressionState;
 }
 
-buttonNumber0.addEventListener('click', () => {
-    expressionState += 0;
-});
+buttonNumber0.addEventListener('click', updateExpression('0'));
 
-buttonNumber1.addEventListener('click', () => {
-    expressionState += 1;
-    console.log(expressionState);
-});
+buttonNumber1.addEventListener(
+    'click',
+    updateExpression((expressionState += '1'))
+);
 
 buttonNumber2.addEventListener('click', () => {
     expressionState += 2;
     console.log(outputElements.innerHTML);
+    console.log(expressionState);
 });
 
 buttonNumber3.addEventListener('click', () => {
