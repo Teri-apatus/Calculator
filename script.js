@@ -23,104 +23,98 @@ const buttonClear = document.getElementById('clear');
 const outputElements = document.getElementById('expressionOutput');
 const INITIAL_STATE = '';
 
-let expressionState = outputElements.innerHTML;
+let expressionState = INITIAL_STATE;
 
-// let lastSymbol = expressionState.at(-1);
+const MATH_OPERATION_SYMBOLS = ['+', '-', '*', '÷'];
 
 function updateExpression(newExpression) {
     expressionState = newExpression;
     outputElements.innerHTML = expressionState;
 }
 
-buttonNumber0.addEventListener('click', updateExpression('0'));
+function setLastSymbol(symbol) {
+    let lastSymbol = expressionState.at(-1);
+    if (MATH_OPERATION_SYMBOLS.includes(lastSymbol)) {
+        return expressionState.slice(0, -1) + symbol;
+    } else if ('.'.includes(lastSymbol)) {
+        return expressionState;
+    } else {
+        return expressionState + symbol;
+    }
+}
 
-buttonNumber1.addEventListener(
-    'click',
-    updateExpression((expressionState += '1'))
-);
+buttonNumber0.addEventListener('click', () => {
+    updateExpression(expressionState + '0');
+});
+
+buttonNumber1.addEventListener('click', () => {
+    updateExpression(expressionState + '1');
+});
 
 buttonNumber2.addEventListener('click', () => {
-    expressionState += 2;
-    console.log(outputElements.innerHTML);
-    console.log(expressionState);
+    updateExpression(expressionState + '2');
 });
 
 buttonNumber3.addEventListener('click', () => {
-    expressionState += 3;
+    updateExpression(expressionState + '3');
 });
 
 buttonNumber4.addEventListener('click', () => {
-    expressionState += 4;
+    updateExpression(expressionState + '4');
 });
 
 buttonNumber5.addEventListener('click', () => {
-    expressionState += 5;
+    updateExpression(expressionState + '5');
 });
 
 buttonNumber6.addEventListener('click', () => {
-    expressionState += 6;
+    updateExpression(expressionState + '6');
 });
 
 buttonNumber7.addEventListener('click', () => {
-    expressionState += 7;
+    updateExpression(expressionState + '7');
 });
 
 buttonNumber8.addEventListener('click', () => {
-    expressionState += 8;
+    updateExpression(expressionState + '8');
 });
 
 buttonNumber9.addEventListener('click', () => {
-    expressionState += 9;
+    updateExpression(expressionState + '9');
 });
 
 buttonPlus.addEventListener('click', () => {
-    if (lastSymbol == '+') {
-        return outputElements;
-    }
-    expressionState += '+';
+    updateExpression(setLastSymbol('+'));
 });
 
 buttonMinus.addEventListener('click', () => {
-    if (expressionState.endsWith('-')) {
-        return outputElements;
-    }
-    expressionState += '-';
+    updateExpression(setLastSymbol('-'));
 });
 
 buttonMultiply.addEventListener('click', () => {
-    if (expressionState.endsWith('*')) {
-        return outputElements;
-    }
-    expressionState += '*';
+    updateExpression(setLastSymbol('*'));
 });
 
 buttonDivide.addEventListener('click', () => {
-    if (expressionState.endsWith('÷')) {
-        return outputElements;
-    }
-    expressionState += '÷';
+    updateExpression(setLastSymbol('÷'));
 });
 
 buttonOpeningBracket.addEventListener('click', () => {
-    expressionState = '(';
+    updateExpression(expressionState + '(');
 });
 
 buttonClosingBracket.addEventListener('click', () => {
-    expressionState = ')';
+    updateExpression(expressionState + ')');
 });
 
 buttonPoint.addEventListener('click', () => {
-    if (expressionState.endsWith('.')) {
-        return outputElements;
-    }
-    expressionState = '.';
+    updateExpression(setLastSymbol('.'));
 });
 
 buttonBackspace.addEventListener('click', () => {
-    expressionState = expressionState.slice(0, -1);
-    console.log(expressionState);
+    updateExpression(expressionState.slice(0, -1));
 });
 
 buttonClear.addEventListener('click', () => {
-    expressionState = INITIAL_STATE;
+    updateExpression(INITIAL_STATE);
 });
