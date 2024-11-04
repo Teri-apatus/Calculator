@@ -32,11 +32,11 @@ function updateExpression(newExpression) {
     outputElements.innerHTML = expressionState;
 }
 
-function setLastSymbol(symbol) {
-    let lastSymbol = expressionState.at(-1);
+function getNewExpressionState(symbol) {
+    const lastSymbol = expressionState.at(-1);
     if (MATH_OPERATION_SYMBOLS.includes(lastSymbol)) {
         return expressionState.slice(0, -1) + symbol;
-    } else if ('.'.includes(lastSymbol)) {
+    } else if (lastSymbol === '.') {
         return expressionState;
     } else {
         return expressionState + symbol;
@@ -84,19 +84,19 @@ buttonNumber9.addEventListener('click', () => {
 });
 
 buttonPlus.addEventListener('click', () => {
-    updateExpression(setLastSymbol('+'));
+    updateExpression(getNewExpressionState('+'));
 });
 
 buttonMinus.addEventListener('click', () => {
-    updateExpression(setLastSymbol('-'));
+    updateExpression(getNewExpressionState('-'));
 });
 
 buttonMultiply.addEventListener('click', () => {
-    updateExpression(setLastSymbol('*'));
+    updateExpression(getNewExpressionState('*'));
 });
 
 buttonDivide.addEventListener('click', () => {
-    updateExpression(setLastSymbol('÷'));
+    updateExpression(getNewExpressionState('÷'));
 });
 
 buttonOpeningBracket.addEventListener('click', () => {
@@ -108,7 +108,7 @@ buttonClosingBracket.addEventListener('click', () => {
 });
 
 buttonPoint.addEventListener('click', () => {
-    updateExpression(setLastSymbol('.'));
+    updateExpression(getNewExpressionState('.'));
 });
 
 buttonBackspace.addEventListener('click', () => {
