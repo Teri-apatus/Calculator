@@ -12,30 +12,33 @@
     <body>
         <div class="container">
             <div class="calculator">
-                <input type="text" placeholder="0" />
-                <div class="buttons">
-                    <button class="CE">CE</button>
-                    <button>C</button>
-                    <button>(</button>
-                    <button>)</button>
-                    <button>7</button>
-                    <button>8</button>
-                    <button>9</button>
-                    <button>/</button>
-                    <button>4</button>
-                    <button>5</button>
-                    <button>6</button>
-                    <button>*</button>
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>-</button>
-                    <button>0</button>
-                    <button>,</button>
-                    <button>=</button>
-                    <button>+</button>
+                <div class="output">
+                    <pre id="expressionOutput"></pre>
+                </div>
+                <div class="buttons" id="buttons">
+                    <button class="clear" id="clear">C</button>
+                    <button id="backspace">⌫</button>
+                    <button id="openingBracket">(</button>
+                    <button id="closingBracket">)</button>
+                    <button id="number7">7</button>
+                    <button id="number8">8</button>
+                    <button id="number9">9</button>
+                    <button id="divide">÷</button>
+                    <button id="number4">4</button>
+                    <button id="number5">5</button>
+                    <button id="number6">6</button>
+                    <button id="multiply">*</button>
+                    <button id="number1">1</button>
+                    <button id="number2">2</button>
+                    <button id="number3">3</button>
+                    <button id="minus">-</button>
+                    <button id="number0">0</button>
+                    <button id="point">.</button>
+                    <button id="equals">=</button>
+                    <button id="plus">+</button>
                 </div>
             </div>
         </div>
+        <script src="script.js"></script>
     </body>
 </html>

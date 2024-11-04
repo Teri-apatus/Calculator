@@ -16,7 +16,7 @@ body {
     border-radius: 5px;
 }
 
-input {
+.output {
     background-color: var(--main-bg-color);
     color: var(--main-text-color);
     height: 98px;
@@ -48,7 +48,7 @@ button {
     border-radius: 5px;
 }
 
-.CE:hover {
+.clear:hover {
     background-color: #e01300;
 }
 
