@@ -100,11 +100,11 @@ buttonDivide.addEventListener('click', () => {
 });
 
 buttonOpeningBracket.addEventListener('click', () => {
-    updateExpression(expressionState + '(');
+    updateExpression(getNewExpressionState('('));
 });
 
 buttonClosingBracket.addEventListener('click', () => {
-    updateExpression(expressionState + ')');
+    updateExpression(getNewExpressionState(')'));
 });
 
 buttonPoint.addEventListener('click', () => {
