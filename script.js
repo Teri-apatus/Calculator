@@ -34,23 +34,23 @@ function updateExpression(newExpression) {
     expressionState = newExpression;
     outputElements.innerHTML = expressionState.join(' ');
 }
-// []
-// 1 getNewExpressionState(1) -> [1]
-// updateExpression([1]) -> expressionState ([]) -> ([1])
 
-// 2 getNewExpressionState(2) -> [12]
-// updateExpression([12]) -> expressionState ([1]) -> ([12])
-
-// + getNewExpressionState(+) -> [12, +]
-// updateExpression([12, +]) -> expressionState ([12]) -> ([12, +])
-
-// / getNewExpressionState(÷) -> [12, ÷]
-// updateExpression([12, /]) -> expressionState ([12, +]) -> ([12, /])
-// [12, /]
+function joinToLastItem(symbol, lastItem, newExpressionState) {
+    const newLastItem = lastItem + symbol;
+    newExpressionState[newExpressionState.length - 1] = newLastItem;
+}
 
 function getNewExpressionState(symbol) {
     console.log({ expressionState });
     let newExpressionState = expressionState.slice();
+
+    if (expressionState.length === 0) {
+        if (NUMBERS.includes(symbol) || symbol === '(') {
+            newExpressionState.push(symbol);
+        }
+        return newExpressionState;
+    }
+
     const lastItem = expressionState.at(-1);
     // если expressionState === [], то можно ввести только число или '('
     // если lastItem - число, то можно вводить все что угодно дальше
@@ -59,21 +59,8 @@ function getNewExpressionState(symbol) {
     // если открывающаяся скобка, то только число
     // если закрывающаяся скобка, то только оператор
 
-    function joinToLastItem(symbol) {
-        const newLastItem = lastItem + symbol;
-        newExpressionState[newExpressionState.length - 1] =
-            newLastItem;
-    }
-
     console.log({ symbol, lastItem });
     console.log('последний элемент', typeof lastItem);
-
-    if (expressionState.length === 0) {
-        if (NUMBERS.includes(symbol) || symbol === '(') {
-            newExpressionState.push(symbol);
-        }
-        return newExpressionState;
-    }
 
     // если lastItem - число, то можно вводить все что угодно дальше
     // если lastItem - число, то нельзя открывающуюся скобку
@@ -89,10 +76,10 @@ function getNewExpressionState(symbol) {
         }
 
         if (NUMBERS.includes(symbol)) {
-            joinToLastItem(symbol);
+            joinToLastItem(symbol, lastItem, newExpressionState);
             // если lastItem - точка '.', то дальше только число
         } else if (symbol === '.' && !lastItem.includes('.')) {
-            joinToLastItem(symbol);
+            joinToLastItem(symbol, lastItem, newExpressionState);
         } else {
             // если операторы или скобки
             newExpressionState.push(symbol);
@@ -133,281 +120,264 @@ function getNewExpressionState(symbol) {
     throw new Error('unexpeted behavior');
 }
 
-// дописать все остальные тест кейсы
-function testGetNewExpressionState() {
-    expressionState = [];
-    const caseObj = {
-        'first case': () => {
-            const newState = getNewExpressionState('+');
-            console.log(
-                'при вводе оператора не меняется на пустом',
-                newState.length === 0
-            );
-        },
-
-        'second case': () => {
-            const newState = getNewExpressionState('.');
-            console.log(
-                'при вводе точки не меняется на пустом',
-                newState.length === 0
-            );
-        },
-
-        'third case': () => {
-            const newState = getNewExpressionState(CLOSE_BRACKET);
-            console.log(
-                'при вводе закрывающейся скобки не меняется на пустом',
-                newState.length === 0
-            );
-        },
-
-        'fourth case': () => {
-            const newState = getNewExpressionState(OPEN_BRACKET);
-            console.log(
-                'при вводе открывающейся скобки меняется на не пустой',
-                newState.length === 1
-            );
-        },
-        'fifth case': () => {
-            const newState = getNewExpressionState('0');
-            console.log(
-                'при вводе числа меняется на не пустой',
-                newState.length === 1
-            );
-        },
-    };
-    Object.values(caseObj).forEach((test) => test());
-
-    expressionState = ['123'];
-    const caseObj2 = {
-        'first case': () => {
-            const newState = getNewExpressionState('+');
-            console.log(
-                'при вводе оператора после числа добавляется следующим элементом массива',
-                newState.length === 2
-            );
-        },
-
-        'second case': () => {
-            const newState = getNewExpressionState('.');
-            console.log(
-                'при вводе точки после числа добавляется к числу',
-                newState[0] === '123.',
-                'при этом длина массива не меняется',
-                newState.length === 1
-            );
-        },
-
-        'third case': () => {
-            const newState = getNewExpressionState(CLOSE_BRACKET);
-            console.log(
-                'при вводе закрывающейся скобки после числа добавляется следующим элементом массива',
-                newState.length === 2
-            );
-        },
-
-        'fourth case': () => {
-            const newState = getNewExpressionState(OPEN_BRACKET);
-            console.log(
-                'при вводе открывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-        'fifth case': () => {
-            const newState = getNewExpressionState('0');
-            console.log(
-                'при вводе числа после числа добавляется к числу',
-                newState.length === 1
-            );
-        },
-    };
-    Object.values(caseObj2).forEach((test) => test());
-
-    expressionState = ['123', '+'];
-    const caseObj3 = {
-        'first case': () => {
-            const newState = getNewExpressionState('+');
-            console.log(
-                'при вводе оператора после оператора не меняется',
-                newState.length === 2
-            );
-        },
-
-        'second case': () => {
-            const newState = getNewExpressionState('.');
-            console.log(
-                'при вводе точки после оператора не меняется',
-                newState.length === 2
-            );
-        },
-
-        'third case': () => {
-            const newState = getNewExpressionState(CLOSE_BRACKET);
-            console.log(
-                'при вводе закрывающейся скобки после оператора не меняется',
-                newState.length === 2
-            );
-        },
-
-        'fourth case': () => {
-            const newState = getNewExpressionState(OPEN_BRACKET);
-            console.log(
-                'при вводе открывающейся скобки после оператора добавляется следующим элементом массива',
-                newState.length === 3
-            );
-        },
-        'fifth case': () => {
-            const newState = getNewExpressionState('0');
-            console.log(
-                'при вводе числа после оператора добавляется следующим элементом массива',
-                newState.length === 3
-            );
-        },
-    };
-    Object.values(caseObj3).forEach((test) => test());
-
-    expressionState = [OPEN_BRACKET];
-    const caseObj4 = {
-        'first case': () => {
-            const newState = getNewExpressionState('+');
-            console.log(
-                'при вводе оператора после открывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-
-        'second case': () => {
-            const newState = getNewExpressionState('.');
-            console.log(
-                'при вводе точки после открывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-
-        'third case': () => {
-            const newState = getNewExpressionState(CLOSE_BRACKET);
-            console.log(
-                'при вводе закрывающейся скобки после открывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-
-        'fourth case': () => {
-            const newState = getNewExpressionState(OPEN_BRACKET);
-            console.log(
-                'при вводе открывающейся скобки после открывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-        'fifth case': () => {
-            const newState = getNewExpressionState('0');
-            console.log(
-                'при вводе числа после открывающейся скобки добавляется следующим элементом массива',
-                newState.length === 2
-            );
-        },
-    };
-    Object.values(caseObj4).forEach((test) => test());
-
-    expressionState = [CLOSE_BRACKET];
-    const caseObj5 = {
-        'first case': () => {
-            const newState = getNewExpressionState('+');
-            console.log(
-                'при вводе оператора после закрывающейся скобки добавляется следующим элементом массива',
-                newState.length === 2
-            );
-        },
-
-        'second case': () => {
-            const newState = getNewExpressionState('.');
-            console.log(
-                'при вводе точки после закрывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-
-        'third case': () => {
-            const newState = getNewExpressionState(CLOSE_BRACKET);
-            console.log(
-                'при вводе закрывающейся скобки после закрывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-
-        'fourth case': () => {
-            const newState = getNewExpressionState(OPEN_BRACKET);
-            console.log(
-                'при вводе открывающейся скобки после закрывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-        'fifth case': () => {
-            const newState = getNewExpressionState('0');
-            console.log(
-                'при вводе числа после закрывающейся скобки не меняется',
-                newState.length === 1
-            );
-        },
-    };
-    Object.values(caseObj5).forEach((test) => test());
-
-    expressionState = ['5.'];
-    const caseObj6 = {
-        'first case': () => {
-            const newState = getNewExpressionState('+');
-            console.log(
-                'при вводе оператора после точки не меняется',
-                newState.length === 1 // выдаёт false
-            );
-        },
-
-        'second case': () => {
-            const newState = getNewExpressionState('.');
-            console.log(
-                'при вводе точки после точки не меняется',
-                newState.length === 1
-            );
-        },
-
-        'third case': () => {
-            const newState = getNewExpressionState(CLOSE_BRACKET);
-            console.log(
-                'при вводе закрывающейся скобки после точки не меняется',
-                newState.length === 1 // выдаёт false
-            );
-        },
-
-        'fourth case': () => {
-            const newState = getNewExpressionState(OPEN_BRACKET);
-            console.log(
-                'при вводе открывающейся скобки после точки не меняется',
-                newState.length === 1
-            );
-        },
-        'fifth case': () => {
-            const newState = getNewExpressionState('0');
-            console.log(
-                'при вводе числа после точки число добавляется к точке',
-                newState[0] === '5.0',
-                'при этом длина массива не меняется',
-                newState.length === 1
-            );
-        },
-    };
-    Object.values(caseObj6).forEach((test) => test());
+function compareArrays(expectedOuput, newState) {
+    return newState.join('') === expectedOuput.join('');
 }
 
-//     expressionState = [];
-//     const newState = getNewExpressionState('+');
-//     console.log(
-//         'не меняется на пустом, если число',
-//         newState.length === 0
-//     );
+function testGetNewExpressionState() {
+    tests = [
+        {
+            testState: [],
+            inputSymbol: '+',
+            expectedOuput: [],
+            consoleText: 'при вводе оператора не меняется на пустом',
+        },
+        {
+            testState: [],
+            inputSymbol: '.',
+            expectedOuput: [],
+            consoleText: 'при вводе точки не меняется на пустом',
+        },
+        {
+            testState: [],
+            inputSymbol: CLOSE_BRACKET,
+            expectedOuput: [],
+            consoleText:
+                'при вводе закрывающейся скобки не меняется на пустом',
+        },
+        {
+            testState: [],
+            inputSymbol: OPEN_BRACKET,
+            expectedOuput: [OPEN_BRACKET],
+            consoleText:
+                'при вводе открывающейся скобки меняется на не пустой',
+        },
+        {
+            testState: [],
+            inputSymbol: '0',
+            expectedOuput: ['0'],
+            consoleText: 'при вводе числа меняется на не пустой',
+        },
+        {
+            testState: ['123'],
+            inputSymbol: '+',
+            expectedOuput: ['123', '+'],
+            consoleText:
+                'при вводе оператора после числа добавляется следующим элементом массива',
+        },
+        {
+            testState: ['123'],
+            inputSymbol: '.',
+            expectedOuput: ['123.'],
+            consoleText:
+                'при вводе точки после числа добавляется к числу',
+        },
+        {
+            testState: ['123'],
+            inputSymbol: CLOSE_BRACKET,
+            expectedOuput: ['123', CLOSE_BRACKET],
+            consoleText:
+                'при вводе закрывающейся скобки после числа добавляется следующим элементом массива',
+        },
+        {
+            testState: ['123'],
+            inputSymbol: OPEN_BRACKET,
+            expectedOuput: ['123'],
+            consoleText: 'при вводе открывающейся скобки не меняется',
+        },
+        {
+            testState: ['123'],
+            inputSymbol: '0',
+            expectedOuput: ['1230'],
+            consoleText:
+                'при вводе числа после числа добавляется к числу',
+        },
+        {
+            testState: ['123', '+'],
+            inputSymbol: '-',
+            expectedOuput: ['123', '-'],
+            consoleText:
+                'при вводе оператора после оператора меняется на новый оператор',
+        },
+        {
+            testState: ['123', '+'],
+            inputSymbol: '.',
+            expectedOuput: ['123', '+'],
+            consoleText:
+                'при вводе точки после оператора не меняется',
+        },
+        {
+            testState: ['123', '+'],
+            inputSymbol: CLOSE_BRACKET,
+            expectedOuput: ['123', '+'],
+            consoleText:
+                'при вводе закрывающейся скобки после оператора не меняется',
+        },
+        {
+            testState: ['123', '+'],
+            inputSymbol: OPEN_BRACKET,
+            expectedOuput: ['123', '+', OPEN_BRACKET],
+            consoleText:
+                'при вводе открывающейся скобки после оператора добавляется следующим элементом массива',
+        },
+        {
+            testState: ['123', '+'],
+            inputSymbol: '0',
+            expectedOuput: ['123', '+', '0'],
+            consoleText:
+                'при вводе числа после оператора добавляется следующим элементом массива',
+        },
 
-//     newState = getNewExpressionState(OPEN_BRACKET);
-//     console.log(true);
-// }
+        {
+            testState: [OPEN_BRACKET],
+            inputSymbol: '+',
+            expectedOuput: [OPEN_BRACKET],
+            consoleText:
+                'при вводе оператора после открывающейся скобки не меняется',
+        },
+        {
+            testState: [OPEN_BRACKET],
+            inputSymbol: '.',
+            expectedOuput: [OPEN_BRACKET],
+            consoleText:
+                'при вводе точки после открывающейся скобки не меняется',
+        },
+        {
+            testState: [OPEN_BRACKET],
+            inputSymbol: CLOSE_BRACKET,
+            expectedOuput: [OPEN_BRACKET],
+            consoleText:
+                'при вводе закрывающейся скобки после открывающейся скобки не меняется',
+        },
+        {
+            testState: [OPEN_BRACKET],
+            inputSymbol: OPEN_BRACKET,
+            expectedOuput: [OPEN_BRACKET],
+            consoleText:
+                'при вводе открывающейся скобки после открывающейся скобки не меняется',
+        },
+        {
+            testState: [OPEN_BRACKET],
+            inputSymbol: '0',
+            expectedOuput: [OPEN_BRACKET, '0'],
+            consoleText:
+                'при вводе числа после открывающейся скобки добавляется следующим элементом массива',
+        },
+
+        {
+            testState: [CLOSE_BRACKET],
+            inputSymbol: '+',
+            expectedOuput: [CLOSE_BRACKET, '+'],
+            consoleText:
+                'при вводе оператора после закрывающейся скобки добавляется следующим элементом массива',
+        },
+        {
+            testState: [CLOSE_BRACKET],
+            inputSymbol: '.',
+            expectedOuput: [CLOSE_BRACKET],
+            consoleText:
+                'при вводе точки после закрывающейся скобки не меняется',
+        },
+        {
+            testState: [CLOSE_BRACKET],
+            inputSymbol: CLOSE_BRACKET,
+            expectedOuput: [CLOSE_BRACKET],
+            consoleText:
+                'при вводе закрывающейся скобки после закрывающейся скобки не меняется',
+        },
+        {
+            testState: [CLOSE_BRACKET],
+            inputSymbol: OPEN_BRACKET,
+            expectedOuput: [CLOSE_BRACKET],
+            consoleText:
+                'при вводе открывающейся скобки после закрывающейся скобки не меняется',
+        },
+        {
+            testState: [CLOSE_BRACKET],
+            inputSymbol: '0',
+            expectedOuput: [CLOSE_BRACKET],
+            consoleText:
+                'при вводе числа после закрывающейся скобки не меняется',
+        },
+        {
+            testState: ['5.'],
+            inputSymbol: '+',
+            expectedOuput: ['5.'],
+            consoleText:
+                'при вводе оператора после точки не меняется',
+        },
+        {
+            testState: ['5.'],
+            inputSymbol: '.',
+            expectedOuput: ['5.'],
+            consoleText: 'при вводе точки после точки не меняется',
+        },
+        {
+            testState: ['5.'],
+            inputSymbol: CLOSE_BRACKET,
+            expectedOuput: ['5.'],
+            consoleText:
+                'при вводе закрывающейся скобки после точки не меняется',
+        },
+        {
+            testState: ['5.'],
+            inputSymbol: OPEN_BRACKET,
+            expectedOuput: ['5.'],
+            consoleText:
+                'при вводе открывающейся скобки после точки не меняется',
+        },
+        {
+            testState: ['5.'],
+            inputSymbol: '0',
+            expectedOuput: ['5.0'],
+            consoleText:
+                'при вводе числа после точки число добавляется к точке',
+        },
+        {
+            testState: ['5', '+', '3'],
+            inputSymbol: '=',
+            expectedOuput: ['8'],
+            consoleText: '5 + 3 = 8',
+        },
+        {
+            testState: ['5', '+', '3', '*', '2'],
+            inputSymbol: '=',
+            expectedOuput: ['11'],
+            consoleText: '5 + 3 * 2 = 11',
+        },
+        {
+            testState: ['5', '+', '3', '*', '(', '2', '+', '4', ')'],
+            inputSymbol: '=',
+            expectedOuput: ['23'],
+            consoleText: '5 + 3  * ( 2 + 4 ) = 23',
+        },
+    ];
+
+    tests.forEach((test) => {
+        expressionState = test.testState;
+        const newState = getNewExpressionState(test.inputSymbol);
+        console.log(
+            test.consoleText,
+            compareArrays(test.expectedOuput, newState)
+        );
+    });
+}
+
+// compareArrs(newState, expectedOuput)
+// );
+// const a = [OPEN_BRACKET]
+// const b = [OPEN_BRACKET]
+// JSON.stringify(a) === JSON.stringify(b)
+// a.join('') === b.join('')
+// a.every((aItem, i )=> aItem === b[i])
+// a === b
+// {a: 1, b:1}, {b: 1, a: 1}
+// a[0] === b[0]
+// a[1] === b[1]
+// ...
+// a[last] === b[last]
+
+//['(', '123213', '+', ] getNewExpressionState('0'); ['(', '123213', '+', '0' ]
 
 testGetNewExpressionState();
 
