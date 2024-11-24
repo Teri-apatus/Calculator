@@ -92,6 +92,7 @@ function parseOperators(expression) {
   let curPriority = 0;
 
   for (let i = 0; i < expression.length; i++) {
+    // меняем приоритет если встречаем скобки
     if (expression[i] === OPEN_BRACKET) {
       curPriority += BRACKET_PRIORITY;
       bracketStack.push(OPEN_BRACKET);
@@ -99,6 +100,8 @@ function parseOperators(expression) {
     }
     if (expression[i] === CLOSE_BRACKET) {
       curPriority -= BRACKET_PRIORITY;
+
+      // проверяем корректность скобок
       if (bracketStack.at(-1) === OPEN_BRACKET) {
         bracketStack.pop();
       } else {
@@ -111,8 +114,10 @@ function parseOperators(expression) {
     const listNode = new ListNode(expression[i]);
     list.add(listNode);
 
+    // если встречаем оператор, то добавляем ссылку на на nodeList в массив с соответствующим приоритетом операции
     if (MATH_OPERATION_SYMBOLS.includes(expression[i])) {
       const curOperatorPriority = curPriority + OPERATION_WEIGH[expression[i]];
+
       if (!priorityObj[curOperatorPriority]) {
         priorityObj[curOperatorPriority] = [listNode];
       } else {
@@ -135,17 +140,21 @@ export function calculateExpression(expression) {
 
   const { priorityObj, list } = parseResult;
 
+  // сортируем очередь приоритетов от большего к меньшему
   const priorityQueue = Object.keys(priorityObj).sort((a, b) => b - a);
 
   priorityQueue.forEach((curPriority) => {
     priorityObj[curPriority].forEach((operationNode) => {
+      // вычисляем результат для каждого оператора - слева и справа от него всегда значения
       const operationFunc = OPERATIONS_FUNC[operationNode.value];
       const leftListNode = operationNode.prev;
       const rightListNode = operationNode.next;
       const result = operationFunc(+leftListNode.value, +rightListNode.value);
 
+      // переписываем левый узел вычисленным значением
       leftListNode.value = result;
 
+      // и удаляем остальные
       [operationNode, rightListNode].forEach((listNode) =>
         list.remove(listNode)
       );
