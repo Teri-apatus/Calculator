@@ -44,14 +44,36 @@ function joinToLastItem(symbol, lastItem, newExpressionState) {
     newExpressionState[newExpressionState.length - 1] = newLastItem;
 }
 
+function isPossibleForCloseBracket(expression) {
+  const bracketStack = []
+
+  for (const item of expression) {
+    if (item === OPEN_BRACKET) {
+      bracketStack.push(OPEN_BRACKET)
+    } else if (item === CLOSE_BRACKET) {
+      if (bracketStack.at(-1) === OPEN_BRACKET) {
+        bracketStack.pop()
+      } else {
+        return false
+      }
+    }
+  }
+
+  return bracketStack.length > 0
+}
+
 function getNewExpressionState(symbol) {
     let newExpressionState = expressionState.slice();
 debugger
     if (expressionState.length === 0) {
-        if (NUMBERS.includes(symbol) || symbol === '(') {
+        if (NUMBERS.includes(symbol) || symbol === OPEN_BRACKET) {
             newExpressionState.push(symbol);
         }
         return newExpressionState;
+    }
+
+    if (symbol === CLOSE_BRACKET && !isPossibleForCloseBracket(expressionState)) {
+      return newExpressionState
     }
 
     const lastItem = expressionState.at(-1);
@@ -109,7 +131,7 @@ debugger
     }
 
     if (lastItem === CLOSE_BRACKET) {
-        if (MATH_OPERATION_SYMBOLS.includes(symbol)) {
+        if (MATH_OPERATION_SYMBOLS.includes(symbol) || symbol === CLOSE_BRACKET) {
             newExpressionState.push(symbol);
         }
 
@@ -327,6 +349,7 @@ function testGetNewExpressionState() {
             consoleText:
                 'при вводе числа после точки число добавляется к точке',
         },
+        // TODO: добавить тест кейс для скобок
     ];
 
     let testResult = true;

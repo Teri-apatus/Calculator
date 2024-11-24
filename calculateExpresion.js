@@ -130,7 +130,6 @@ export function calculateExpression(expression) {
     parseResult = parseOperators(expression);
   } catch (e) {
     // если не получилось посчитать пока просто возвращаем как было
-    // TODO: надо обработать этот кейс при вводе закрывающей скобки ,чтобы у пользователя не было возможности неправильно писать
     return expression;
   }
 
