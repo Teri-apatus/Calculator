@@ -1,3 +1,6 @@
+import {calculateExpression} from './calculateExpresion.js'
+import { compareArrays } from './utils.js';
+
 const buttonNumber0 = document.getElementById('number0');
 const buttonNumber1 = document.getElementById('number1');
 const buttonNumber2 = document.getElementById('number2');
@@ -19,6 +22,7 @@ const buttonClosingBracket =
 const buttonPoint = document.getElementById('point');
 const buttonBackspace = document.getElementById('backspace');
 const buttonClear = document.getElementById('clear');
+const buttonEquals = document.getElementById('equals');
 
 const outputElements = document.getElementById('expressionOutput');
 const INITIAL_STATE = [];
@@ -42,7 +46,7 @@ function joinToLastItem(symbol, lastItem, newExpressionState) {
 
 function getNewExpressionState(symbol) {
     let newExpressionState = expressionState.slice();
-
+debugger
     if (expressionState.length === 0) {
         if (NUMBERS.includes(symbol) || symbol === '(') {
             newExpressionState.push(symbol);
@@ -51,7 +55,6 @@ function getNewExpressionState(symbol) {
     }
 
     const lastItem = expressionState.at(-1);
-    const lastSymbolOfItem = lastItem.at(-1);
 
     if (
         NUMBERS.includes(lastItem) /* если однозначное число*/ ||
@@ -64,7 +67,9 @@ function getNewExpressionState(symbol) {
             return newExpressionState;
         }
 
-        if (lastSymbolOfItem.includes('.')) {
+        const lastSymbolOfItem = lastItem.at(-1);
+
+        if (lastSymbolOfItem === '.') {
             if (
                 symbol === CLOSE_BRACKET ||
                 MATH_OPERATION_SYMBOLS.includes(symbol)
@@ -115,7 +120,7 @@ function getNewExpressionState(symbol) {
 }
 
 function testGetNewExpressionState() {
-    tests = [
+    const tests = [
         {
             testState: [],
             inputSymbol: '+',
@@ -322,25 +327,8 @@ function testGetNewExpressionState() {
             consoleText:
                 'при вводе числа после точки число добавляется к точке',
         },
-        // {
-        //     testState: ['5', '+', '3'],
-        //     inputSymbol: '=',
-        //     expectedOuput: ['8'],
-        //     consoleText: '5 + 3 = 8',
-        // },
-        // {
-        //     testState: ['5', '+', '3', '*', '2'],
-        //     inputSymbol: '=',
-        //     expectedOuput: ['11'],
-        //     consoleText: '5 + 3 * 2 = 11',
-        // },
-        // {
-        //     testState: ['5', '+', '3', '*', '(', '2', '+', '4', ')'],
-        //     inputSymbol: '=',
-        //     expectedOuput: ['23'],
-        //     consoleText: '5 + 3  * ( 2 + 4 ) = 23',
-        // },
     ];
+
     let testResult = true;
     tests.forEach((test) => {
         expressionState = test.testState;
@@ -353,11 +341,7 @@ function testGetNewExpressionState() {
     });
 
     if (testResult) {
-        console.log('Все тесты пройдены');
-    }
-
-    function compareArrays(expectedOuput, newState) {
-        return newState.join('') === expectedOuput.join('');
+        console.log('getNewExpressionState: Все тесты пройдены');
     }
 }
 
@@ -437,4 +421,9 @@ buttonBackspace.addEventListener('click', () => {
 
 buttonClear.addEventListener('click', () => {
     updateExpression(INITIAL_STATE.slice());
+});
+
+buttonEquals.addEventListener('click', () => {
+  const result = calculateExpression(expressionState)
+  updateExpression(result);
 });
