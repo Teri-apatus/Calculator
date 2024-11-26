@@ -64,7 +64,7 @@ function isPossibleForCloseBracket(expression) {
 
 function getNewExpressionState(symbol) {
     let newExpressionState = expressionState.slice();
-debugger
+
     if (expressionState.length === 0) {
         if (NUMBERS.includes(symbol) || symbol === OPEN_BRACKET) {
             newExpressionState.push(symbol);
