@@ -2,9 +2,9 @@ import {
     OPEN_BRACKET,
     CLOSE_BRACKET,
     INITIAL_STATE,
-} from './variables.js';
-import { getNewExpressionState } from './getNewExpressionState.js';
-import { compareArrays } from './utils.js';
+} from '../variables.js';
+import { getNewExpressionState } from '../getNewExpressionState.js';
+import { compareArrays } from '../utils.js';
 
 let expressionState = INITIAL_STATE.slice();
 

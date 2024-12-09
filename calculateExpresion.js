@@ -1,5 +1,3 @@
-import { testCalculateExpression } from './testCalculateExpression.js';
-
 class ListNode {
     constructor(value) {
         this.value = value;
@@ -170,5 +168,3 @@ export function calculateExpression(expression) {
 
     return [String(list.begin.value)];
 }
-
-testCalculateExpression();

@@ -1,6 +1,5 @@
 import { calculateExpression } from './calculateExpresion.js';
 import { getNewExpressionState } from './getNewExpressionState.js';
-import { testGetNewExpressionState } from './testGetNewExpressionState.js';
 import {
     updateExpression,
     expressionState,
@@ -33,8 +32,6 @@ const buttonPoint = document.getElementById('point');
 const buttonBackspace = document.getElementById('backspace');
 const buttonClear = document.getElementById('clear');
 const buttonEquals = document.getElementById('equals');
-
-testGetNewExpressionState();
 
 buttonNumber0.addEventListener('click', () => {
     updateExpression(getNewExpressionState('0', expressionState));

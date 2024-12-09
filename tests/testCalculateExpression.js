@@ -1,5 +1,5 @@
-import { compareArrays } from './utils.js';
-import { calculateExpression } from './calculateExpresion.js';
+import { compareArrays } from '../utils.js';
+import { calculateExpression } from '../calculateExpresion.js';
 
 export function testCalculateExpression() {
     const tests = [
