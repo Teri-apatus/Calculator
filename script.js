@@ -33,87 +33,124 @@ const buttonBackspace = document.getElementById('backspace');
 const buttonClear = document.getElementById('clear');
 const buttonEquals = document.getElementById('equals');
 
+const outputElements = document.getElementById('expressionOutput');
+
+const updateExpressionBinded = updateExpression.bind(
+    null,
+    outputElements
+);
+
 buttonNumber0.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('0', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('0', expressionState)
+    );
 });
 
 buttonNumber1.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('1', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('1', expressionState)
+    );
 });
 
 buttonNumber2.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('2', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('2', expressionState)
+    );
 });
 
 buttonNumber3.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('3', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('3', expressionState)
+    );
 });
 
 buttonNumber4.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('4', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('4', expressionState)
+    );
 });
 
 buttonNumber5.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('5', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('5', expressionState)
+    );
 });
 
 buttonNumber6.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('6', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('6', expressionState)
+    );
 });
 
 buttonNumber7.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('7', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('7', expressionState)
+    );
 });
 
 buttonNumber8.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('8', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('8', expressionState)
+    );
 });
 
 buttonNumber9.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('9', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('9', expressionState)
+    );
 });
 
 buttonPlus.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('+', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('+', expressionState)
+    );
 });
 
 buttonMinus.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('-', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('-', expressionState)
+    );
 });
 
 buttonMultiply.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('*', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('*', expressionState)
+    );
 });
 
 buttonDivide.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('÷', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('÷', expressionState)
+    );
 });
 
 buttonOpeningBracket.addEventListener('click', () => {
-    updateExpression(
+    updateExpressionBinded(
         getNewExpressionState(OPEN_BRACKET, expressionState)
     );
 });
 
 buttonClosingBracket.addEventListener('click', () => {
-    updateExpression(
+    updateExpressionBinded(
         getNewExpressionState(CLOSE_BRACKET, expressionState)
     );
 });
 
 buttonPoint.addEventListener('click', () => {
-    updateExpression(getNewExpressionState('.', expressionState));
+    updateExpressionBinded(
+        getNewExpressionState('.', expressionState)
+    );
 });
 
 buttonBackspace.addEventListener('click', () => {
-    updateExpression(expressionState.slice(0, -1));
+    updateExpressionBinded(expressionState.slice(0, -1));
 });
 
 buttonClear.addEventListener('click', () => {
-    updateExpression(INITIAL_STATE.slice());
+    updateExpressionBinded(INITIAL_STATE.slice());
 });
 
 buttonEquals.addEventListener('click', () => {
     const result = calculateExpression(expressionState);
-    updateExpression(result);
+    updateExpressionBinded(result);
 });
